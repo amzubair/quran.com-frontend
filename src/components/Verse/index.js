@@ -68,12 +68,14 @@ class Verse extends Component {
   componentDidMount() {
     const { verse, audio, isSearched } = this.props;
 
-    !isSearched && this.props.loadAudio({
-      chapterId: verse.chapterId,
-      verseId: verse.id,
-      verseKey: verse.verseKey,
-      audio
-    });
+    if (!isSearched) {
+      this.props.loadAudio({
+        chapterId: verse.chapterId,
+        verseId: verse.id,
+        verseKey: verse.verseKey,
+        audio
+      });
+    }
   }
 
   // TODO: Should this belong here?
@@ -341,4 +343,4 @@ class Verse extends Component {
   }
 }
 
-export default connect(state => ({userAgent: state.options.userAgent}), { loadAudio })(Verse);
+export default connect(state => ({ userAgent: state.options.userAgent }), { loadAudio })(Verse);

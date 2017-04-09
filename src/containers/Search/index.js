@@ -16,7 +16,7 @@ import { search } from 'redux/actions/search.js';
 
 import LocaleFormattedMessage from 'components/LocaleFormattedMessage';
 
-import { verseType, optionsType } from 'types';
+import { optionsType } from 'types';
 
 const style = require('./style.scss');
 
@@ -30,7 +30,6 @@ class Search extends Component {
     perPage: PropTypes.number,
     query: PropTypes.string,
     results: PropTypes.arrayOf(PropTypes.string),
-    entities: PropTypes.arrayOf(verseType),
     push: PropTypes.func.isRequired,
     location: PropTypes.shape({ // eslint-disable-line
       q: PropTypes.string,
@@ -120,7 +119,7 @@ class Search extends Component {
   }
 
   renderBody() {
-    const { isErrored, isLoading, results, entities, options, location: { query } } = this.props;
+    const { isErrored, isLoading, results, options, location: { query } } = this.props;
 
     if (isLoading) {
       return <Loader isActive={isLoading} />;
