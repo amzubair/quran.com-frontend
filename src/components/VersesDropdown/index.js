@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import { Link } from 'react-scroll';
 
@@ -10,8 +10,7 @@ const style = require('./style.scss');
 
 export default class VersesDropdown extends Component {
   static propTypes = {
-    ayat: PropTypes.number.isRequired,
-    loadedAyahs: PropTypes.instanceOf(Set).isRequired,
+    loadedVerses: PropTypes.instanceOf(Set).isRequired,
     chapter: surahType.isRequired, // Set
     onClick: PropTypes.func.isRequired,
     isReadingMode: PropTypes.bool,
@@ -19,19 +18,19 @@ export default class VersesDropdown extends Component {
   };
 
   static defaultProps = {
-    className: 'col-md-3'
+    className: null
   };
 
   renderItem = (ayah, index) => {
-    const { chapter, loadedAyahs, isReadingMode, onClick } = this.props;
-    const ayahNum = index + 1;
+    const { chapter, loadedVerses, isReadingMode, onClick } = this.props;
+    const number = index + 1;
 
-    if (loadedAyahs.has(ayahNum) && !isReadingMode) {
+    if (loadedVerses.has(number) && !isReadingMode) {
       return (
         <li key={index}>
           <Link
-            onClick={() => onClick(ayahNum)}
-            to={`ayah:${chapter.chapterNumber}:${ayahNum}`}
+            onClick={() => onClick(number)}
+            to={`verse:${chapter.chapterNumber}:${number}`}
             smooth
             spy
             offset={-120}
@@ -39,18 +38,22 @@ export default class VersesDropdown extends Component {
             duration={500}
             className="pointer"
           >
-            {ayahNum}
+            {number}
           </Link>
         </li>
       );
     }
 
-    return <MenuItem key={index} onClick={() => onClick(ayahNum)}>{ayahNum}</MenuItem>;
+    return (
+      <MenuItem key={index} onClick={() => onClick(number)}>
+        {number}
+      </MenuItem>
+    );
   }
 
   renderMenu() {
-    const { ayat } = this.props;
-    const array = Array(ayat).join().split(',');
+    const { chapter } = this.props;
+    const array = Array(chapter.versesCount).join().split(',');
 
     return array.map((ayah, index) => this.renderItem(ayah, index));
   }
@@ -63,13 +66,14 @@ export default class VersesDropdown extends Component {
     );
 
     return (
-      <DropdownButton
+      <NavDropdown
+        link
         className={`dropdown ${className} ${style.dropdown}`}
-        title={title}
         id="verses-dropdown"
+        title={title}
       >
         {this.renderMenu()}
-      </DropdownButton>
+      </NavDropdown>
     );
   }
 }

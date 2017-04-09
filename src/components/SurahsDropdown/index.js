@@ -12,7 +12,7 @@ const styles = require('./style.scss');
 export default class SurahsDropdown extends Component {
   static propTypes = {
     chapters: PropTypes.objectOf(surahType).isRequired,
-    title: PropTypes.string,
+    chapter: surahType
   };
 
   shouldComponentUpdate(nextProps) {
@@ -46,14 +46,14 @@ export default class SurahsDropdown extends Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { chapter } = this.props;
 
     return (
       <NavDropdown
         link
         className={styles.dropdown}
         id="chapters-dropdown"
-        title={title || <LocaleFormattedMessage id="setting.chapters" defaultMessage="Surahs" />}
+        title={chapter.nameSimple || <LocaleFormattedMessage id="setting.chapters" defaultMessage="Surahs" />}
       >
         {this.renderList()}
       </NavDropdown>
